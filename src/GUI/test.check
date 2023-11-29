@@ -1,0 +1,136 @@
+#include "viewer.h"
+#include <check.h>
+
+#define VERTEX_CNT 3
+#define FACET_CNT 3
+
+#test fill_verts_facets
+data_t data = {0};
+FILE *obj_file;
+obj_file = fopen("obj/test.obj", "r");
+cnt_of_vertexes_and_facets(obj_file, &data);
+rewind(obj_file);
+ck_assert_int_eq(data.vertex_cnt, VERTEX_CNT);
+ck_assert_int_eq(data.facet_cnt, FACET_CNT);
+fill_vertexes_array(&data, obj_file);
+rewind(obj_file);
+fill_facets_array(&data, obj_file);
+ck_assert_double_eq_tol(data.vertexes_arr[0], 0.5464, 1e-4);
+ck_assert_double_eq_tol(data.vertexes_arr[3], 0.6207, 1e-4);
+free(data.vertexes_arr);
+free(data.facets_arr);
+fclose(obj_file);
+
+
+#test move_by_y
+data_t data = {0};
+FILE *obj_file;
+obj_file = fopen("obj/test.obj", "r");
+cnt_of_vertexes_and_facets(obj_file, &data);
+rewind(obj_file);
+fill_vertexes_array(&data, obj_file);
+rewind(obj_file);
+fill_facets_array(&data, obj_file);
+move_y(&data, 1);
+ck_assert_double_eq_tol(data.vertexes_arr[1], -20.9516, 1e-4);
+ck_assert_double_eq_tol(data.vertexes_arr[4], -20.7610, 1e-4);
+ck_assert_int_eq(data.facets_arr[1], 1);
+free(data.vertexes_arr);
+free(data.facets_arr);
+fclose(obj_file);
+
+
+#test move_by_x
+data_t data = {0};
+FILE *obj_file;
+obj_file = fopen("obj/test.obj", "r");
+cnt_of_vertexes_and_facets(obj_file, &data);
+rewind(obj_file);
+fill_vertexes_array(&data, obj_file);
+rewind(obj_file);
+fill_facets_array(&data, obj_file);
+move_x(&data, 1);
+ck_assert_double_eq_tol(data.vertexes_arr[0], 1.5464, 1e-4);
+ck_assert_double_eq_tol(data.vertexes_arr[3], 1.6207, 1e-4);
+free(data.vertexes_arr);
+free(data.facets_arr);
+fclose(obj_file);
+
+#test move_by_z
+data_t data = {0};
+FILE *obj_file;
+obj_file = fopen("obj/test.obj", "r");
+cnt_of_vertexes_and_facets(obj_file, &data);
+rewind(obj_file);
+fill_vertexes_array(&data, obj_file);
+rewind(obj_file);
+fill_facets_array(&data, obj_file);
+move_z(&data, 1);
+ck_assert_double_eq_tol(data.vertexes_arr[2], 32.4643, 1e-4);
+ck_assert_double_eq_tol(data.vertexes_arr[5], 32.5371, 1e-4);
+free(data.vertexes_arr);
+free(data.facets_arr);
+fclose(obj_file);
+
+#test rot_by_x
+data_t data = {0};
+FILE *obj_file;
+obj_file = fopen("obj/test.obj", "r");
+cnt_of_vertexes_and_facets(obj_file, &data);
+rewind(obj_file);
+fill_vertexes_array(&data, obj_file);
+rewind(obj_file);
+fill_facets_array(&data, obj_file);
+rotation_by_ox(&data, 1);
+ck_assert_double_eq_tol(data.vertexes_arr[1], -38.3368, 1e-4);
+free(data.vertexes_arr);
+free(data.facets_arr);
+fclose(obj_file);
+
+#test rot_by_y
+data_t data = {0};
+FILE *obj_file;
+obj_file = fopen("obj/test.obj", "r");
+cnt_of_vertexes_and_facets(obj_file, &data);
+rewind(obj_file);
+fill_vertexes_array(&data, obj_file);
+rewind(obj_file);
+fill_facets_array(&data, obj_file);
+rotation_by_oy(&data, 1);
+ck_assert_double_eq_tol(data.vertexes_arr[1], -21.9516, 1e-4);
+free(data.vertexes_arr);
+free(data.facets_arr);
+fclose(obj_file);
+
+
+#test rot_by_z
+data_t data = {0};
+FILE *obj_file;
+obj_file = fopen("obj/test.obj", "r");
+cnt_of_vertexes_and_facets(obj_file, &data);
+rewind(obj_file);
+fill_vertexes_array(&data, obj_file);
+rewind(obj_file);
+fill_facets_array(&data, obj_file);
+rotation_by_oz(&data, 1);
+ck_assert_double_eq_tol(data.vertexes_arr[2], 31.4643, 1e-4);
+free(data.vertexes_arr);
+free(data.facets_arr);
+fclose(obj_file);
+
+
+#test zoom1
+data_t data = {0};
+FILE *obj_file;
+obj_file = fopen("obj/test.obj", "r");
+cnt_of_vertexes_and_facets(obj_file, &data);
+rewind(obj_file);
+fill_vertexes_array(&data, obj_file);
+rewind(obj_file);
+fill_facets_array(&data, obj_file);
+zoom(&data, 2);
+ck_assert_double_eq_tol(data.vertexes_arr[5], 31.5371 * 2, 1e-4);
+free(data.vertexes_arr);
+free(data.facets_arr);
+fclose(obj_file);
+
